@@ -1,0 +1,178 @@
+using System;
+using System.Text;
+
+namespace ConsoleChess
+{
+    class ChessGame
+    {
+        static string[,] playfield = new string[8, 8];
+        //static Figures newFigure = new Figures();
+
+        static void Main()
+        {
+            //Console.CursorVisible = false;
+            PrintPlayfield();
+            InitialPositions(playfield);
+            PrintFigures(playfield);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.SetCursorPosition(99, 1);
+            Console.Write("White(Red)");
+            Console.SetCursorPosition(112, 1);
+            Console.Write("Black");
+            Console.SetCursorPosition(98, 3);
+            Console.Write("1.");
+            string nextMove = Console.ReadLine();
+            //Console.ForegroundColor = ConsoleColor.Cyan;
+            //Console.WriteLine(newFigure.whiteFigures[3]);
+            //Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            //Console.WriteLine(newFigure.blackFigures[1]);
+        }
+
+        static void InitialPositions(string[,] playfield)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                playfield[6, i] = Figures.whiteFigures[0];
+                playfield[1, i] = Figures.blackFigures[0];
+                if (i==0||i==7)
+                {
+                    playfield[7, i] = Figures.whiteFigures[3];
+                    playfield[0, i] = Figures.blackFigures[3];
+                }
+                else if (i == 1 || i == 6)
+                {
+                    playfield[7, i] = Figures.whiteFigures[1];
+                    playfield[0, i] = Figures.blackFigures[1];
+                }
+                else if (i == 2 || i == 5)
+                {
+                    playfield[7, i] = Figures.whiteFigures[2];
+                    playfield[0, i] = Figures.blackFigures[2];
+                }
+                else if (i == 3)
+                {
+                    playfield[7, i] = Figures.whiteFigures[4];
+                    playfield[0, i] = Figures.blackFigures[4];
+                }
+                else if (i == 4)
+                {
+                    playfield[7, i] = Figures.whiteFigures[5];
+                    playfield[0, i] = Figures.blackFigures[5];
+                }
+            }
+        }
+
+        static void PrintPlayfield()
+        {
+            Console.BufferWidth = Console.WindowWidth = 120;
+            Console.BufferHeight = Console.WindowHeight = Console.LargestWindowHeight;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+            Console.WriteLine(@"
+╔═══════════╦═══════════╦═══════════╦═══════════╦═══════════╦═══════════╦═══════════╦═══════════╗
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+╠═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╣
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+╠═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╣
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+╠═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╣
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+╠═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╣
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+╠═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╣
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+╠═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╣
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+║           ║███████████║           ║███████████║           ║███████████║           ║███████████║
+╠═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╬═══════════╣
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+║███████████║           ║███████████║           ║███████████║           ║███████████║           ║
+╚═══════════╩═══════════╩═══════════╩═══════════╩═══════════╩═══════════╩═══════════╩═══════════╝
+");
+        }
+
+        static void PrintFigures(string[,] FiguresPositions)
+        {
+            for (int rows = 0; rows < FiguresPositions.GetLength(0); rows++)
+            {
+                for (int columns = 0; columns < FiguresPositions.GetLength(1); columns++)
+                {
+                    if (FiguresPositions[rows,columns]!=String.Empty)
+                    {
+                        int firstSymbolRow = 0;
+                        int whiteFigureIndex = Array.IndexOf(Figures.whiteFigures, FiguresPositions[rows, columns]);
+                        int blackFigureIndex = Array.IndexOf(Figures.blackFigures, FiguresPositions[rows, columns]);
+                        if (whiteFigureIndex == -1 && blackFigureIndex < 4 || blackFigureIndex == -1 && whiteFigureIndex < 4)
+                        {
+                            firstSymbolRow = 1;
+                        }
+                        int firstColumn = columns * 12 + 5;
+                        int firstRow = rows * 6 + firstSymbolRow + 2;
+                        if (whiteFigureIndex>-1)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            PrintCurrentFigure(FiguresPositions[rows,columns],firstColumn,firstRow);
+                        }
+                        if (blackFigureIndex > -1)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            PrintCurrentFigure(FiguresPositions[rows, columns], firstColumn, firstRow);
+                        } 
+                    }
+                }
+            }
+        }
+
+        static void PrintCurrentFigure(string currentFigure, int col, int row)
+        {
+            Console.SetCursorPosition(col, row);
+            for (int i = 0; i < currentFigure.Length; i++)
+            {
+                if ((int)currentFigure[i] == 13)
+                {
+                    if (i != 0)
+                    {
+                        Console.SetCursorPosition(col, ++row);
+                    }
+                    i++;
+                }
+                else
+                {
+                    Console.Write(currentFigure[i]);
+                }
+            }
+            Console.WriteLine();
+        }
+    }
+}
