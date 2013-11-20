@@ -5,24 +5,7 @@ public class TestIDNumber
 {
     public static void Main()
     {
-        string userID = Console.ReadLine();
-        if (!TestEGN(userID))
-        {
-            Console.WriteLine("Wrong IDNumber");
-        }
-        else
-        {
-            Console.WriteLine("Correct IDNumber");
-        }
-        string userEIK = Console.ReadLine();
-        if (!ValidateBulstatFull(userEIK))
-        {
-            Console.WriteLine("Wrong EIK");
-        }
-        else
-        {
-            Console.WriteLine("Correct EIK");
-        }
+        
     }
 
     private static bool TestEGN(string userIDNumber)
@@ -118,7 +101,7 @@ public class TestIDNumber
             for (int i = 8; i < 13; i++)
             {
                 int ch = 0;
-                ch = Convert.ToInt16(bulstat);
+                ch = Convert.ToInt16(bulstat[i]);
                 if (ch < 48 || ch > 57)
                 {
                     return false;
