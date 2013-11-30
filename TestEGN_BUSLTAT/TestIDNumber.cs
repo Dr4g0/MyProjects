@@ -1,155 +1,122 @@
 ﻿using System;
-using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class TestIDNumber
+namespace CourierManager
 {
-    public static void Main()
+    public static class ValidatorIDNumber
     {
-        
-    }
-
-    private static bool TestEGN(string userIDNumber)
-    {
-        if (userIDNumber.Length != 10)
+        public static bool ValidatePersonalIDNumber(string personalIDNumber)
         {
-            return false;
-        }
-        foreach (char digit in userIDNumber)
-        {
-            if (!Char.IsDigit(digit))
+            if (personalIDNumber.Length != 10)
             {
                 return false;
             }
-        }
-        int month = int.Parse(userIDNumber.Substring(2, 2));
-        int year = 0;
-        if (month < 13)
-        {
-            year = int.Parse("19" + userIDNumber.Substring(0, 2));
-        }
-        else if (month < 33)
-        {
-            month -= 20;
-            year = int.Parse("18" + userIDNumber.Substring(0, 2));
-        }
-        else
-        {
-            month -= 40;
-            year = int.Parse("20" + userIDNumber.Substring(0, 2));
-        }
-        int day = int.Parse(userIDNumber.Substring(4, 2));
-        DateTime dateOfBirth = new DateTime();
-        if (!DateTime.TryParse(String.Format("{0}/{1}/{2}", day, month, year), out dateOfBirth))
-        {
-            return false;
-        }
-        int[] weights = new int[] { 2, 4, 8, 5, 10, 9, 7, 3, 6 };
-        int totalControlSum = 0;
-        for (int i = 0; i < 9; i++)
-        {
-            totalControlSum += weights[i] * (userIDNumber[i] - '0');
-        }
-        int controlDigit = 0;
-        int reminder = totalControlSum % 11;
-        if (reminder < 10)
-        {
-            controlDigit = reminder;
-        }
-        int lastDigitFromIDNumber = int.Parse(userIDNumber.Substring(9));
-        if (lastDigitFromIDNumber != controlDigit)
-        {
-            return false;
-        }
-        return true;
-    }
-
-    public static bool ValidateBulstat(string bulstat)
-    {
-        if (bulstat.Length != 9 && bulstat.Length != 13)
-        {
-            return false;
-        }
-        int checkSum1 = 0;
-        int checkSum2 = 0;
-        for (int i = 0; i < 8; i++)
-        {
-            int ch = 0;
-            ch = Convert.ToInt16(bulstat[i]);
-            if (ch < 48 || ch > 57)
+            foreach (char digit in personalIDNumber)
+            {
+                if (!Char.IsDigit(digit))
+                {
+                    return false;
+                }
+            }
+            int month = int.Parse(personalIDNumber.Substring(2, 2));
+            int year = 0;
+            if (month < 13)
+            {
+                year = int.Parse("19" + personalIDNumber.Substring(0, 2));
+            }
+            else if (month < 33)
+            {
+                month -= 20;
+                year = int.Parse("18" + personalIDNumber.Substring(0, 2));
+            }
+            else
+            {
+                month -= 40;
+                year = int.Parse("20" + personalIDNumber.Substring(0, 2));
+            }
+            int day = int.Parse(personalIDNumber.Substring(4, 2));
+            DateTime dateOfBirth = new DateTime();
+            if (!DateTime.TryParse(String.Format("{0}/{1}/{2}", day, month, year), out dateOfBirth))
             {
                 return false;
             }
-            ch -= 48;
-            checkSum1 += ch * (i + 1);
-            checkSum2 += ch * (i + 3);
-        }
-        int controlDigit = checkSum1 % 11;
-        if (controlDigit == 10)
-            controlDigit = checkSum2 % 11;
-        if (controlDigit == 10)
-            controlDigit = 0;
-        if (Convert.ToInt16(bulstat[8]) != controlDigit + 48)
-        {
-            return false;
-        }
-        if (bulstat.Length == 13)
-        {
-            int[] weight1 = { 2, 7, 3, 5 };
-            int[] weight2 = { 4, 9, 5, 7 };
-            checkSum1 = 0;
-            checkSum2 = 0;
-            for (int i = 8; i < 13; i++)
+            int[] weights = new int[] { 2, 4, 8, 5, 10, 9, 7, 3, 6 };
+            int totalControlSum = 0;
+            for (int i = 0; i < 9; i++)
             {
-                int ch = 0;
-                ch = Convert.ToInt16(bulstat[i]);
-                if (ch < 48 || ch > 57)
-                {
-                    return false;
-                }
-                ch -= 48;
-                checkSum1 += ch * weight1[i - 8];
-                checkSum2 += ch * weight2[i - 8];
+                totalControlSum += weights[i] * (personalIDNumber[i] - '0');
             }
-            if (controlDigit + 48 != Convert.ToInt16(bulstat[12]))
+            int controlDigit = 0;
+            int reminder = totalControlSum % 11;
+            if (reminder < 10)
+            {
+                controlDigit = reminder;
+            }
+            int lastDigitFromIDNumber = int.Parse(personalIDNumber.Substring(9));
+            if (lastDigitFromIDNumber != controlDigit)
             {
                 return false;
             }
+            return true;
         }
-        return true;
-    }
 
-    public static bool ValidateBulstatFull(string bulstat)
-    {
-        bulstat = bulstat.Trim();
-        switch (bulstat.Length)
+        public static bool ValidateCompanyIDNumber(string companyIDNumber)
         {
-            case 9:
-                if (!ValidateBulstat(bulstat))
+            if (companyIDNumber.Length != 9 && companyIDNumber.Length != 13)
+            {
+                return false;
+            }
+            int checkSum1 = 0;
+            int checkSum2 = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                char currentDigit = companyIDNumber[i];
+                if (!Char.IsDigit(currentDigit))
                 {
                     return false;
                 }
-                return true;
-            case 13:
-                if (!ValidateBulstat(bulstat))
+                checkSum1 += (currentDigit - 48) * (i + 1);
+                checkSum2 += (currentDigit - 48) * (i + 3);
+            }
+            int controlDigit = checkSum1 % 11;
+            if (controlDigit == 10)
+                controlDigit = checkSum2 % 11;
+            if (controlDigit == 10)
+                controlDigit = 0;
+            if (Convert.ToInt16(companyIDNumber[8]) != controlDigit + 48)
+            {
+                return false;
+            }
+            if (companyIDNumber.Length == 13)
+            {
+                int[] weight1 = { 2, 7, 3, 5 };
+                int[] weight2 = { 4, 9, 5, 7 };
+                checkSum1 = 0;
+                checkSum2 = 0;
+                for (int i = 8; i < 13; i++)
+                {
+                    char currentDigit = companyIDNumber[i];
+                    if (!Char.IsDigit(currentDigit))
+                    {
+                        return false;
+                    }
+                    checkSum1 += (currentDigit - 48) * weight1[i - 8];
+                    checkSum2 += (currentDigit - 48) * weight2[i - 8];
+                }
+                controlDigit = checkSum1 % 11;
+                if (controlDigit == 10)
+                    controlDigit = checkSum2 % 11;
+                if (controlDigit == 10)
+                    controlDigit = 0;
+                if (controlDigit + 48 != Convert.ToInt16(companyIDNumber[12]))
                 {
                     return false;
                 }
-                return true;
+            }
+            return true;
         }
-        if (bulstat.Length != 10 && bulstat.Length != 14)
-        {
-            return false;
-        }
-        char f = "А"[0];
-        char l = "Я"[0];
-        if (bulstat[0] < f || bulstat[0] > l)
-        {
-            return false;
-        }
-        if (!ValidateBulstat(bulstat.Substring(1, bulstat.Length - 1)))
-        {
-            return false;
-        }
-        return true;
     }
 }
